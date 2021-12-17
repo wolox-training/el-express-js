@@ -17,5 +17,11 @@ module.exports = (sequelize, DataTypes) => {
   User.associate = function(models) {
     User.hasMany(models.Weet, { as: 'weets', foreignKey: 'user_id' });
   };
+  User.findByEmail = async function(email) {
+    const queryBuilder = {
+      where: { email }
+    };
+    return User.findOne(queryBuilder);
+  };
   return User;
 };
