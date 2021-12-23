@@ -10,6 +10,7 @@ module.exports = {
         allowNull: false
       },
       content: {
+        // eslint-disable-next-line new-cap
         type: Sequelize.STRING(280),
         allowNull: false
       },
@@ -24,7 +25,7 @@ module.exports = {
     });
   },
 
-  down: async (queryInterface, Sequelize) => {
+  down: async queryInterface => {
     await queryInterface.dropTable('weets');
   }
 };

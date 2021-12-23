@@ -23,6 +23,7 @@ module.exports = {
         allowNull: false
       },
       password: {
+        // eslint-disable-next-line new-cap
         type: Sequelize.STRING(512),
         allowNull: false
       }

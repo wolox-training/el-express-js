@@ -8,5 +8,5 @@ exports.validate = (req, _, next) => {
   return next(errors.badRequest(`${param}_${msg}`));
 };
 
-exports.generateSchema = (schema) => checkSchema(schema);
-exports.validOrAbort = (schema) => [exports.generateSchema(schema), exports.validate]
+exports.generateSchema = schema => checkSchema(schema);
+exports.validOrAbort = schema => [exports.generateSchema(schema), exports.validate];

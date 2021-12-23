@@ -1,6 +1,16 @@
 const { whiteListDomain } = require('../helpers/white_list_domain');
 
 exports.userSchema = {
+  name: {
+    exists: {
+      errorMessage: 'required'
+    }
+  },
+  surname: {
+    exists: {
+      errorMessage: 'required'
+    }
+  },
   email: {
     exists: {
       errorMessage: 'required'
@@ -14,6 +24,9 @@ exports.userSchema = {
     }
   },
   password: {
+    exists: {
+      errorMessage: 'required'
+    },
     isLength: {
       options: { min: 8 },
       errorMessage: 'min_length'
