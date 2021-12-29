@@ -1,12 +1,14 @@
 'use strict';
 
 module.exports = (sequelize, DataTypes) => {
+  // eslint-disable-line
   const User = sequelize.define(
     'User',
     {
       name: DataTypes.STRING,
       surname: DataTypes.STRING,
       email: DataTypes.STRING,
+      // eslint-disable-next-line new-cap
       password: DataTypes.STRING(512)
     },
     {
@@ -14,14 +16,17 @@ module.exports = (sequelize, DataTypes) => {
       tableName: 'users'
     }
   );
-  User.associate = function(models) {
+  User.associate = models => {
     User.hasMany(models.Weet, { as: 'weets', foreignKey: 'user_id' });
   };
-  User.findByEmail = async function(email) {
+  User.findByEmail = async email => {
     const queryBuilder = {
       where: { email }
     };
-    return User.findOne(queryBuilder);
+    const user = await User.findOne(queryBuilder);
+    return user;
   };
+
+  // eslint-disable-line
   return User;
 };
