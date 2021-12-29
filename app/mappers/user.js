@@ -4,3 +4,8 @@ exports.userSignUpMapper = data => ({
   surname: data.surname,
   password: data.password
 });
+
+exports.userSignInMapper = data => ({
+  email: data.email,
+  password: data.password
+});

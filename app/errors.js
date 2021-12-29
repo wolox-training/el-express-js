@@ -10,5 +10,10 @@ exports.DEFAULT_ERROR = 'default_error';
 exports.defaultError = message => internalError(message, exports.DEFAULT_ERROR);
 
 exports.BAD_REQUEST_ERROR = 'bad_request';
-
 exports.badRequest = message => internalError(message, exports.BAD_REQUEST_ERROR);
+
+exports.UNAUTHORIZED_ERROR = 'unauthorized_request';
+exports.unauthorized = message => internalError(message, exports.UNAUTHORIZED_ERROR);
+
+exports.FORBIDDEN_ERROR = 'forbidden_request';
+exports.forbidden = message => internalError(message, exports.FORBIDDEN_ERROR);
