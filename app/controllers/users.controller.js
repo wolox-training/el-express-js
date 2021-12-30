@@ -27,9 +27,9 @@ exports.signIn = async (req, res, next) => {
   const { email, password } = userSignInMapper(body);
   try {
     const user = await userFindByEmail(email);
-    if (!user) throw errors.forbidden(EMAIL_OR_PASSWORD_DO_NOT_MATCH);
+    if (!user) throw errors.authenticationError(EMAIL_OR_PASSWORD_DO_NOT_MATCH);
     const comparePassword = compareHash(user.password, password);
-    if (!comparePassword) throw errors.forbidden(EMAIL_OR_PASSWORD_DO_NOT_MATCH);
+    if (!comparePassword) throw errors.authenticationError(EMAIL_OR_PASSWORD_DO_NOT_MATCH);
     const token = jwtEncode(userSerializer(user));
     return res.status(200).send({ token });
   } catch (err) {

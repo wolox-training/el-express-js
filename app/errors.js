@@ -15,5 +15,5 @@ exports.badRequest = message => internalError(message, exports.BAD_REQUEST_ERROR
 exports.UNAUTHORIZED_ERROR = 'unauthorized_request';
 exports.unauthorized = message => internalError(message, exports.UNAUTHORIZED_ERROR);
 
-exports.FORBIDDEN_ERROR = 'forbidden_request';
-exports.forbidden = message => internalError(message, exports.FORBIDDEN_ERROR);
+exports.AUTHENTICATION_ERROR = 'authentication_error';
+exports.authenticationError = message => internalError(message, exports.AUTHENTICATION_ERROR);

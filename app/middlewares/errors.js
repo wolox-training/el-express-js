@@ -8,7 +8,7 @@ const statusCodes = {
   [errors.DEFAULT_ERROR]: 500,
   [errors.BAD_REQUEST_ERROR]: 400,
   [errors.UNAUTHORIZED_ERROR]: 401,
-  [errors.FORBIDDEN_ERROR]: 403
+  [errors.AUTHENTICATION_ERROR]: 403
 };
 
 exports.handle = (error, req, res, next) => {

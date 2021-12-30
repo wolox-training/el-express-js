@@ -2,7 +2,7 @@ const { factory } = require('factory-girl');
 const Chance = require('chance');
 const { factoryByModel } = require('./factory_by_models');
 const { hash } = require('.././../app/helpers/auth');
-const { badRequest, forbidden } = require('../../app/errors');
+const { badRequest, authenticationError } = require('../../app/errors');
 const { responseError } = require('../helpers/errors');
 const { removeProperty } = require('../helpers/body');
 const {
@@ -67,5 +67,5 @@ exports.userErrors = {
   nameRequired: responseError(badRequest(NAME_REQUIRED)),
   surnameRequired: responseError(badRequest(SURNAME_REQUIRED)),
   passwordRequired: responseError(badRequest(PASSWORD_REQUIRED)),
-  emailOrPassworDontMatch: responseError(forbidden(EMAIL_OR_PASSWORD_DO_NOT_MATCH))
+  emailOrPassworDontMatch: responseError(authenticationError(EMAIL_OR_PASSWORD_DO_NOT_MATCH))
 };
