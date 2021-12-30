@@ -36,7 +36,7 @@ describe('/users/session POST', () => {
   test('SignIn when email does not exists must fail', async () => {
     const { newUser: user } = userData;
     const response = await request.post('/users/sessions').send(user);
-    expect(response.statusCode).toBe(403);
+    expect(response.statusCode).toBe(401);
     expect(response.body).toMatchObject(userErrors.emailOrPassworDontMatch);
   });
   test('SignIn when password does not match must fail', async () => {
@@ -46,7 +46,7 @@ describe('/users/session POST', () => {
       password: 'wrongPassword1234567'
     };
     const response = await request.post('/users/sessions').send(body);
-    expect(response.statusCode).toBe(403);
+    expect(response.statusCode).toBe(401);
     expect(response.body).toMatchObject(userErrors.emailOrPassworDontMatch);
   });
 });
