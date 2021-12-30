@@ -1,4 +1,4 @@
-module.exports = { 
+module.exports = {
   username: {
     type: 'string',
     example: 'Edilson'
@@ -17,7 +17,7 @@ module.exports = {
   },
   User: {
     type: 'object',
-    properties: { 
+    properties: {
       name: {
         $ref: '#/components/schemas/username'
       },

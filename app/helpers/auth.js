@@ -12,3 +12,4 @@ exports.hash = textPlain => {
   const salt = bcryptJs.genSaltSync(parseInt(rounds));
   return bcryptJs.hashSync(textPlain, salt);
 };
+

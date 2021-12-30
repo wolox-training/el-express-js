@@ -1,6 +1,7 @@
 const logger = require('../logger');
-const { userCreate, userFindByEmail } = require('../services/users');
-const { userSerializer } = require('../serializer/users');
+const { userCreate, userFindByEmail, userFindAll } = require('../services/users');
+const { userSerializer, usersSerializer } = require('../serializer/users');
+const { paginationMapper } = require('../mappers/pagination');
 const { userSignUpMapper } = require('../mappers/user');
 const { hash } = require('../helpers/auth');
 const errors = require('../errors');
@@ -19,5 +20,17 @@ exports.signUp = async (req, res, next) => {
   } catch (err) {
     logger.error(err.message);
     return next(errors.databaseError(DATABASE_ERROR));
+  }
+};
+
+exports.getUsers = async (req, res, next) => {
+  const { query  } = req;
+  try {
+    const pagination = paginationMapper(query);
+    const users = await userFindAll(pagination);
+    return res.status(200).send({ users: usersSerializer({ ...users, ...query}) });
+  } catch (err) {
+    logger.error(err.message)
+    return next(err);
   }
 };
