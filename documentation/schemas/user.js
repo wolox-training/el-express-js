@@ -1,4 +1,4 @@
-module.exports = { 
+module.exports = {
   username: {
     type: 'string',
     example: 'Edilson'
@@ -17,7 +17,7 @@ module.exports = {
   },
   User: {
     type: 'object',
-    properties: { 
+    properties: {
       name: {
         $ref: '#/components/schemas/username'
       },
@@ -40,6 +40,17 @@ module.exports = {
         items: {
           $ref: '#/components/schemas/User'
         }
+      }
+    }
+  },
+  SignIn: {
+    type: 'object',
+    properties: {
+      email: {
+        $ref: '#/components/schemas/userEmail'
+      },
+      password: {
+        $ref: '#/components/schemas/userPassword'
       }
     }
   }

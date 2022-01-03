@@ -37,3 +37,23 @@ exports.userSchema = {
     }
   }
 };
+
+exports.signInSchema = {
+  email: {
+    exists: {
+      errorMessage: 'required'
+    },
+    isEmail: {
+      errorMessage: 'invalid'
+    },
+    custom: {
+      options: value => whiteListDomain(value, ['accenture', 'wolox']),
+      errorMessage: 'domain_invalid'
+    }
+  },
+  password: {
+    exists: {
+      errorMessage: 'required'
+    }
+  }
+};

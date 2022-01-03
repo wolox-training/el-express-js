@@ -2,7 +2,7 @@ const { factory } = require('factory-girl');
 const Chance = require('chance');
 const { factoryByModel } = require('./factory_by_models');
 const { hash } = require('.././../app/helpers/auth');
-const { badRequest } = require('../../app/errors');
+const { badRequest, authenticationError } = require('../../app/errors');
 const { responseError } = require('../helpers/errors');
 const { removeProperty } = require('../helpers/body');
 const {
@@ -12,14 +12,16 @@ const {
   EMAIL_REQUIRED,
   NAME_REQUIRED,
   SURNAME_REQUIRED,
-  PASSWORD_REQUIRED
+  PASSWORD_REQUIRED,
+  EMAIL_OR_PASSWORD_DO_NOT_MATCH
 } = require('../../app/constants/errors');
 
 const chance = new Chance();
 factoryByModel('User');
+exports.defaultPassword = 'XYZ1234567789';
 
 factory.extend('User', 'UserWithHash', {
-  password: hash('12345678wwwffC'),
+  password: hash(exports.defaultPassword),
   email: factory.sequence('User.email', n => `user.test${n}@wolox.com.co`)
 });
 
@@ -27,7 +29,7 @@ const userFake = () => ({
   name: chance.first(),
   surname: chance.last(),
   email: chance.email({ domain: 'accenture.com' }),
-  password: 'XYZ1234567789'
+  password: exports.defaultPassword
 });
 
 const newUser = userFake();
@@ -64,5 +66,6 @@ exports.userErrors = {
   emailRequired: responseError(badRequest(EMAIL_REQUIRED)),
   nameRequired: responseError(badRequest(NAME_REQUIRED)),
   surnameRequired: responseError(badRequest(SURNAME_REQUIRED)),
-  passwordRequired: responseError(badRequest(PASSWORD_REQUIRED))
+  passwordRequired: responseError(badRequest(PASSWORD_REQUIRED)),
+  emailOrPassworDontMatch: responseError(authenticationError(EMAIL_OR_PASSWORD_DO_NOT_MATCH))
 };

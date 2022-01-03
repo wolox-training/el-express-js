@@ -63,5 +63,56 @@ module.exports = {
         }
       }
     }
+  },
+  'users/sessions': {
+    post: {
+      tags: ['AUTH operations'],
+      description: 'Authorize user',
+      operationId: 'authUser',
+      parameters: [],
+      requestBody: {
+        content: {
+          'application/json': {
+            schema: {
+              $ref: '#/components/schemas/SignIn'
+            }
+          }
+        },
+        required: true
+      },
+      responses: {
+        200: {
+          description: 'Token was created'
+        },
+        400: {
+          description: 'Invalid parameters',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/Error'
+              },
+              example: {
+                message: 'Email Required',
+                internal_code: 'bad_request'
+              }
+            }
+          }
+        },
+        401: {
+          description: 'Unauthorized parameters',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/Error'
+              },
+              example: {
+                message: 'Email or password do not match',
+                internal_code: 'unauthorized_request'
+              }
+            }
+          }
+        }
+      }
+    }
   }
 };
