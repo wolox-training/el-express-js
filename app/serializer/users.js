@@ -5,9 +5,4 @@ exports.userSerializer = user => ({
   email: user.email
 });
 
-exports.usersSerializer = users => ({
-  total: parseInt(users.count),
-  page: parseInt(users.page),
-  per_page: parseInt(users.per_page),
-  users: users.rows.map(user => this.userSerializer(user))
-});
+exports.usersSerializer = users => users.map(user => this.userSerializer(user));

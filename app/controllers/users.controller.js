@@ -1,6 +1,7 @@
 const logger = require('../logger');
 const { userCreate, userFindByEmail, userFindAll } = require('../services/users');
 const { userSerializer, usersSerializer } = require('../serializer/users');
+const { paginationSerializer } = require('../serializer/pagination');
 const { userSignUpMapper, userSignInMapper } = require('../mappers/user');
 const { paginationMapper } = require('../mappers/pagination');
 const { hash, compareHash, jwtEncode } = require('../helpers/auth');
@@ -28,7 +29,10 @@ exports.getUsers = async (req, res, next) => {
   try {
     const pagination = paginationMapper(query);
     const users = await userFindAll(pagination);
-    return res.status(200).send({ users: usersSerializer({ ...users, ...query }) });
+    return res.status(200).send({
+      ...paginationSerializer({ count: users.count, ...query }),
+      users: usersSerializer(users.rows)
+    });
   } catch (err) {
     logger.error(err.message);
     return next(err);

@@ -4,11 +4,12 @@ const { signUp, signIn, getUsers } = require('./controllers/users.controller');
 const { userSchema, signInSchema } = require('./schemas/user_schema');
 const { paginationSchema } = require('./schemas/pagination_schema');
 const { validOrAbort } = require('./middlewares/validate_request');
+const { checkAuth } = require('./middlewares/auth');
 
 exports.init = app => {
   app.get('/health', healthCheck);
   app.post('/users', [validOrAbort(userSchema)], signUp);
-  app.get('/users', [validOrAbort(paginationSchema)], getUsers);
+  app.get('/users', [checkAuth, validOrAbort(paginationSchema)], getUsers);
   app.post('/users/sessions', [validOrAbort(signInSchema)], signIn);
   // app.get('/endpoint/get/path', [], controller.methodGET);
   // app.put('/endpoint/put/path', [], controller.methodPUT);

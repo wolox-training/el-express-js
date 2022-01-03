@@ -1,20 +1,20 @@
 exports.paginationSchema = {
   page: {
     in: ['query'],
-    isRequired: {
-      errorMessage: 'required'
+    customSanitizer: {
+      options: value => (value < 1 || !value ? 1 : value)
     },
-    isNumeric: {
-      errorMessage: 'must_be_numeric'
+    isInt: {
+      errorMessage: 'must_be_int'
     }
   },
   per_page: {
     in: ['query'],
-    isRequired: {
-      errorMessage: 'required'
+    customSanitizer: {
+      options: value => (value < 1 || !value ? 10 : value)
     },
-    isNumeric: {
-      errorMessage: 'must_be_numeric'
+    isInt: {
+      errorMessage: 'must_be_int'
     }
   }
 };

@@ -7,5 +7,11 @@ module.exports = {
   NAME_REQUIRED: 'name_required',
   SURNAME_REQUIRED: 'surname_required',
   PASSWORD_REQUIRED: 'password_required',
-  DATABASE_ERROR: 'database_error'
+  DATABASE_ERROR: 'database_error',
+  TOKEN_REQUIRED: 'token_required',
+  TOKEN_INVALID: 'token_invalid',
+  PAGE_REQUIRED: 'page_required',
+  PER_PAGE_REQUIRED: 'per_page_required',
+  PAGE_NUMERIC: 'page_must_be_int',
+  PER_PAGE_NUMERIC: 'per_page_must_be_int'
 };
