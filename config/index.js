@@ -47,6 +47,9 @@ const config = {
     },
     bcrypt: {
       rounds: process.env.ROUNDS
+    },
+    jwt: {
+      secretKey: process.env.SECRET_KEY
     }
   }
 };

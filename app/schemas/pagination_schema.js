@@ -1,4 +1,3 @@
-
 exports.paginationSchema = {
   page: {
     in: ['query'],
@@ -18,4 +17,4 @@ exports.paginationSchema = {
       errorMessage: 'must_be_numeric'
     }
   }
-}
+};

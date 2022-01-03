@@ -34,6 +34,9 @@ module.exports = {
   tags: [
     {
       name: 'CRUD operations'
+    },
+    {
+      name: 'AUTH operations'
     }
   ],
   paths,

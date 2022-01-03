@@ -1,11 +1,11 @@
 const logger = require('../logger');
 const { userCreate, userFindByEmail, userFindAll } = require('../services/users');
 const { userSerializer, usersSerializer } = require('../serializer/users');
+const { userSignUpMapper, userSignInMapper } = require('../mappers/user');
 const { paginationMapper } = require('../mappers/pagination');
-const { userSignUpMapper } = require('../mappers/user');
-const { hash } = require('../helpers/auth');
+const { hash, compareHash, jwtEncode } = require('../helpers/auth');
 const errors = require('../errors');
-const { EMAIL_EXISTS, DATABASE_ERROR } = require('../constants/errors');
+const { EMAIL_EXISTS, DATABASE_ERROR, EMAIL_OR_PASSWORD_DO_NOT_MATCH } = require('../constants/errors');
 
 exports.signUp = async (req, res, next) => {
   const { body } = req;
@@ -24,13 +24,27 @@ exports.signUp = async (req, res, next) => {
 };
 
 exports.getUsers = async (req, res, next) => {
-  const { query  } = req;
+  const { query } = req;
   try {
     const pagination = paginationMapper(query);
     const users = await userFindAll(pagination);
-    return res.status(200).send({ users: usersSerializer({ ...users, ...query}) });
+    return res.status(200).send({ users: usersSerializer({ ...users, ...query }) });
   } catch (err) {
-    logger.error(err.message)
+    logger.error(err.message);
+    return next(err);
+  }
+};
+exports.signIn = async (req, res, next) => {
+  const { body } = req;
+  const { email, password } = userSignInMapper(body);
+  try {
+    const user = await userFindByEmail(email);
+    if (!user) throw errors.authenticationError(EMAIL_OR_PASSWORD_DO_NOT_MATCH);
+    const comparePassword = compareHash(user.password, password);
+    if (!comparePassword) throw errors.authenticationError(EMAIL_OR_PASSWORD_DO_NOT_MATCH);
+    const token = jwtEncode(userSerializer(user));
+    return res.status(200).send({ token });
+  } catch (err) {
     return next(err);
   }
 };

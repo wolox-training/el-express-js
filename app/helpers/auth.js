@@ -1,6 +1,7 @@
 const bcryptJs = require('bcryptjs');
+const jwt = require('jwt-simple');
 const {
-  common: { bcrypt }
+  common: { bcrypt, jwt: jwtConfig }
 } = require('../../config');
 /**
  *
@@ -13,3 +14,20 @@ exports.hash = textPlain => {
   return bcryptJs.hashSync(textPlain, salt);
 };
 
+/**
+ *
+ * @param {string} hash - hash to compare
+ * @param {string} textPlain  - text to compare
+ * @returns {boolean} - true if hash matches the text
+ */
+exports.compareHash = (hash, textPlain) => bcryptJs.compareSync(textPlain, hash);
+
+/**
+ *
+ * @param {object} payload - object to encode
+ * @returns  {string} - token jwt
+ */
+exports.jwtEncode = payload => {
+  const { secretKey } = jwtConfig;
+  return jwt.encode(payload, secretKey);
+};

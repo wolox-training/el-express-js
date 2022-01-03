@@ -42,5 +42,16 @@ module.exports = {
         }
       }
     }
+  },
+  SignIn: {
+    type: 'object',
+    properties: {
+      email: {
+        $ref: '#/components/schemas/userEmail'
+      },
+      password: {
+        $ref: '#/components/schemas/userPassword'
+      }
+    }
   }
 };

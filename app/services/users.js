@@ -9,13 +9,18 @@ exports.userCreate = async userData => {
 };
 
 exports.userFindByEmail = async email => {
-  const user = await User.findByEmail(email);
-  return user;
+  try {
+    const user = await User.findByEmail(email);
+    return user;
+  } catch (err) {
+    logger.error(err);
+    throw databaseError(DATABASE_ERROR);
+  }
 };
 
-exports.userFindAll = async ({limit, offset}) => {
+exports.userFindAll = async ({ limit, offset }) => {
   try {
-    const queryBuilder = { limit , offset}; 
+    const queryBuilder = { limit, offset };
     const users = await User.findAndCountAll(queryBuilder);
     return users;
   } catch (err) {
