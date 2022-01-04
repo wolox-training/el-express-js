@@ -30,7 +30,11 @@ module.exports = {
       description: 'Testing server'
     }
   ],
-  security: [],
+  security: [
+    {
+      BearerAuth: []
+    }
+  ],
   tags: [
     {
       name: 'CRUD operations'
@@ -42,6 +46,11 @@ module.exports = {
   paths,
   components: {
     schemas,
-    securitySchemes: {}
+    securitySchemes: {
+      BearerAuth: {
+        type: 'http',
+        scheme: 'bearer'
+      }
+    }
   }
 };

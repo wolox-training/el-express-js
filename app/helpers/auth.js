@@ -34,7 +34,7 @@ exports.jwtEncode = payload => {
 /**
  *
  * @param {string} token  - jwt to decode
- * @returns  {object}  - payload
+ * @returns  {object} - object with payload and flag isValid
  */
 exports.validateJwt = token => {
   const { secretKey } = jwtConfig;

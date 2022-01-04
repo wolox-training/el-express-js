@@ -8,7 +8,7 @@ const request = supertest(app);
 expect.extend({ toBeArrayOfSize, toIncludeAllPartialMembers });
 
 describe('/users GET', () => {
-  test('Get users must be success when per_page is equal to totalUsers', async () => {
+  test('Get users must be successful when per_page is equal to totalUsers', async () => {
     const page = 1;
     const per_page = 5;
     const totalUsers = 5;
@@ -32,7 +32,7 @@ describe('/users GET', () => {
     expect(response.body.users).toBeArrayOfSize(totalUsers);
     expect(JSON.parse(JSON.stringify(users))).toIncludeAllPartialMembers(response.body.users);
   });
-  test('Get users must be success when per_page is greather than totalUsers', async () => {
+  test('Get users must be successful when per_page is greather than totalUsers', async () => {
     const page = 1;
     const per_page = 10;
     const totalUsers = 5;
@@ -56,7 +56,7 @@ describe('/users GET', () => {
     expect(response.body.users).toBeArrayOfSize(totalUsers);
     expect(JSON.parse(JSON.stringify(users))).toIncludeAllPartialMembers(response.body.users);
   });
-  test('Get users must be success when per_page is less than totalUsers', async () => {
+  test('Get users must be successful when per_page is less than totalUsers', async () => {
     const page = 1;
     const per_page = 2;
     const totalUsers = 5;
