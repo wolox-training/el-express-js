@@ -50,6 +50,9 @@ const config = {
     },
     jwt: {
       secretKey: process.env.SECRET_KEY
+    },
+    numbersApi: {
+      url: process.env.URL_NUMBER_SENTECE
     }
   }
 };

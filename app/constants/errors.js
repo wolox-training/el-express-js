@@ -13,5 +13,6 @@ module.exports = {
   PAGE_REQUIRED: 'page_required',
   PER_PAGE_REQUIRED: 'per_page_required',
   PAGE_NUMERIC: 'page_must_be_int',
-  PER_PAGE_NUMERIC: 'per_page_must_be_int'
+  PER_PAGE_NUMERIC: 'per_page_must_be_int',
+  SERVER_ERROR: 'server_error'
 };
