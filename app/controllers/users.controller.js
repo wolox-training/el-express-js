@@ -1,7 +1,9 @@
 const logger = require('../logger');
-const { userCreate, userFindByEmail } = require('../services/users');
-const { userSerializer } = require('../serializer/users');
+const { userCreate, userFindByEmail, userFindAll } = require('../services/users');
+const { userSerializer, usersSerializer } = require('../serializer/users');
+const { paginationSerializer } = require('../serializer/pagination');
 const { userSignUpMapper, userSignInMapper } = require('../mappers/user');
+const { paginationMapper } = require('../mappers/pagination');
 const { hash, compareHash, jwtEncode } = require('../helpers/auth');
 const errors = require('../errors');
 const { EMAIL_EXISTS, DATABASE_ERROR, EMAIL_OR_PASSWORD_DO_NOT_MATCH } = require('../constants/errors');
@@ -22,6 +24,20 @@ exports.signUp = async (req, res, next) => {
   }
 };
 
+exports.getUsers = async (req, res, next) => {
+  const { query } = req;
+  try {
+    const pagination = paginationMapper(query);
+    const users = await userFindAll(pagination);
+    return res.status(200).send({
+      ...paginationSerializer({ count: users.count, ...query }),
+      users: usersSerializer(users.rows)
+    });
+  } catch (err) {
+    logger.error(err.message);
+    return next(err);
+  }
+};
 exports.signIn = async (req, res, next) => {
   const { body } = req;
   const { email, password } = userSignInMapper(body);

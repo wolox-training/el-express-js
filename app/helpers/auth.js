@@ -31,3 +31,16 @@ exports.jwtEncode = payload => {
   const { secretKey } = jwtConfig;
   return jwt.encode(payload, secretKey);
 };
+/**
+ *
+ * @param {string} token  - jwt to decode
+ * @returns  {object} - object with payload and flag isValid
+ */
+exports.validateJwt = token => {
+  const { secretKey } = jwtConfig;
+  try {
+    return { payload: jwt.decode(token, secretKey), isValid: true };
+  } catch (err) {
+    return { payload: {}, isValid: false };
+  }
+};

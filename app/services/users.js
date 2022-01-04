@@ -17,3 +17,14 @@ exports.userFindByEmail = async email => {
     throw databaseError(DATABASE_ERROR);
   }
 };
+
+exports.userFindAll = async ({ limit, offset }) => {
+  try {
+    const queryBuilder = { limit, offset };
+    const users = await User.findAndCountAll(queryBuilder);
+    return users;
+  } catch (err) {
+    logger.error(err);
+    throw databaseError(DATABASE_ERROR);
+  }
+};

@@ -13,6 +13,15 @@ module.exports = {
             default: 1
           },
           required: false
+        },
+        {
+          name: 'per_page',
+          in: 'query',
+          schema: {
+            type: 'integer',
+            default: 10
+          },
+          required: false
         }
       ],
       responses: {
@@ -64,7 +73,7 @@ module.exports = {
       }
     }
   },
-  'users/sessions': {
+  '/users/sessions': {
     post: {
       tags: ['AUTH operations'],
       description: 'Authorize user',
