@@ -51,6 +51,9 @@ const config = {
     jwt: {
       secretKey: process.env.SECRET_KEY
     },
+    numbersApi: {
+      url: process.env.URL_NUMBER_SENTECE
+    },
     pagination: {
       pageDefault: process.env.PAGE_DEFAULT || 1,
       perPageDefault: process.env.PER_PAGE_DEFAULT || 10
