@@ -1,11 +1,15 @@
 const { weetCreate } = require('../services/weets');
-const { weetSerializer } = require('../serializer/weets');
+const { weetSerializer, weetsSerializer } = require('../serializer/weets');
 const { weetCreateMapper } = require('../mappers/weets');
 const { getSentence } = require('../services/numbers');
 const { maxLength } = require('../helpers/validation');
 const { DEFAULT_ERROR } = require('../constants/errors');
+const { paginationMapper } = require('../mappers/pagination');
+const { paginationSerializer } = require('../serializer/pagination');
+const { weetFindAll } = require('../services/weets');
+
 const {
-  common: { weets }
+  common: { weets: weetsConfig }
 } = require('../../config');
 const errors = require('../errors');
 const logger = require('../logger');
@@ -14,10 +18,25 @@ exports.weetCreate = async (req, res, next) => {
   const { id } = req.payload;
   try {
     const weetContent = await getSentence();
-    if (!maxLength(weetContent, weets.contentMaxLength)) throw errors.defaultError(DEFAULT_ERROR);
+    if (!maxLength(weetContent, weetsConfig.contentMaxLength)) throw errors.defaultError(DEFAULT_ERROR);
     const dataWeet = weetCreateMapper({ content: weetContent, user_id: id });
     const weet = await weetCreate(dataWeet);
     return res.status(201).send(weetSerializer(weet));
+  } catch (err) {
+    logger.error(err);
+    return next(err);
+  }
+};
+
+exports.getWeets = async (req, res, next) => {
+  const { query } = req;
+  try {
+    const pagination = paginationMapper(query);
+    const weets = await weetFindAll(pagination);
+    return res.status(200).send({
+      ...paginationSerializer({ count: weets.count, ...query }),
+      weets: weetsSerializer(weets.rows)
+    });
   } catch (err) {
     logger.error(err);
     return next(err);

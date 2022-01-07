@@ -12,3 +12,14 @@ exports.weetCreate = async weetData => {
     throw databaseError(DATABASE_ERROR);
   }
 };
+
+exports.weetFindAll = async ({ limit, offset }) => {
+  try {
+    const queryBuilder = { limit, offset };
+    const weets = await Weet.findAndCountAll(queryBuilder);
+    return weets;
+  } catch (err) {
+    logger.error(err);
+    throw databaseError(DATABASE_ERROR);
+  }
+};
