@@ -20,7 +20,7 @@ beforeEach(() => {
   require('../mocks/numbers.mock');
 });
 
-describe('/weets GET', () => {
+describe('/weets POST', () => {
   test('Create weet must be success', async () => {
     const user = await factory.create('UserWithHash');
     const userId = user.id;
