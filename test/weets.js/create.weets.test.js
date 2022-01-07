@@ -5,6 +5,9 @@ const { getSentence } = require('../../app/services/numbers');
 const app = require('../../app');
 const { defaultPassword, userErrors } = require('../factory/user_factory');
 const { weetData } = require('../factory/weet_factory');
+const errors = require('../../app/errors');
+const { defaultErrorResponse } = require('../helpers/errors');
+const { DEFAULT_ERROR } = require('../../app/constants/errors');
 
 expect.extend({ toContainKeys });
 
@@ -18,7 +21,7 @@ beforeEach(() => {
 });
 
 describe('/weets GET', () => {
-  test('Create weet must be succesful', async () => {
+  test('Create weet must be success', async () => {
     const user = await factory.create('UserWithHash');
     const userId = user.id;
     const loginBody = {
@@ -31,10 +34,9 @@ describe('/weets GET', () => {
 
     expect(response.statusCode).toBe(201);
     expect(response.body).toContainKeys(['user_id', 'id', 'content']);
-    console.log(response.body);
     expect(response.body.user_id).toBe(userId);
   });
-  test('Create weet with 140 length content must fail', async () => {
+  test('Create weet with content 140 in length must fail', async () => {
     const user = await factory.create('UserWithHash');
     const loginBody = {
       email: user.email,
@@ -45,22 +47,22 @@ describe('/weets GET', () => {
     const { token } = responseLogin.body;
     const response = await request.post('/weets').set('Authorization', `Bearer ${token}`);
     expect(response.statusCode).toBe(500);
-    // TODO: compare with default error body
+    expect(response.body).toMatchObject(defaultErrorResponse());
   });
 
-  // test('Create weet when sevice is not working must fail', async () => {
-  //   const user = await factory.create('UserWithHash');
-  //   const loginBody = {
-  //     email: user.email,
-  //     password: defaultPassword
-  //   };
-  //   // eslint-disable-next-line prefer-promise-reject-errors
-  //   getSentence.mockRejectedValueOnce(Promise.reject('SOME:ERROR'));
-  //   const responseLogin = await request.post('/users/sessions').send(loginBody);
-  //   const { token } = responseLogin.body;
-  //   const response = await request.post('/weets').set('Authorization', `Bearer ${token}`);
-  //   expect(response.statusCode).toBe(500);
-  // });
+  test('Create weet when sevice does not work must fail', async () => {
+    const user = await factory.create('UserWithHash');
+    const loginBody = {
+      email: user.email,
+      password: defaultPassword
+    };
+    const responseLogin = await request.post('/users/sessions').send(loginBody);
+    const { token } = responseLogin.body;
+    getSentence.mockRejectedValueOnce(errors.defaultError(DEFAULT_ERROR));
+    const response = await request.post('/weets').set('Authorization', `Bearer ${token}`);
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toMatchObject(defaultErrorResponse());
+  });
   test('Create with token invalid must fail', async () => {
     const response = await request.post('/weets').set('Authorization', 'Bearer invalid:token');
     expect(response.statusCode).toBe(401);

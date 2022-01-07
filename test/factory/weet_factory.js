@@ -3,7 +3,7 @@ const Chance = require('chance');
 const chance = new Chance();
 
 const weetFake = () => ({
-  content: chance.string({ alpha: true, length: 140 })
+  content: chance.string({ alpha: true, length: 140, casing: 'lower' })
 });
 
 const weetFakeContentError = () => ({
