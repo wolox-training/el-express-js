@@ -10,6 +10,11 @@ module.exports = (sequelize, DataTypes) => {
       email: DataTypes.STRING,
       // eslint-disable-next-line new-cap
       password: DataTypes.STRING(512)
+      // role: {
+      //   type: DataTypes.ENUM,
+      //   values: ['ADMIN', 'REGULAR'],
+      //   defaultValue: 'REGULAR',
+      // }
     },
     {
       timestamps: false,
