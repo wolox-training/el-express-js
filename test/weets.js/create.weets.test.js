@@ -8,6 +8,9 @@ const { weetData } = require('../factory/weet_factory');
 const errors = require('../../app/errors');
 const { defaultErrorResponse } = require('../helpers/errors');
 const { DEFAULT_ERROR } = require('../../app/constants/errors');
+const {
+  common: { weets: weetsConfig }
+} = require('../../config');
 
 expect.extend({ toContainKeys });
 
@@ -36,18 +39,20 @@ describe('/weets POST', () => {
     expect(response.body).toContainKeys(['user_id', 'id', 'content']);
     expect(response.body.user_id).toBe(userId);
   });
-  test('Create weet with content 140 in length must fail', async () => {
+  test('Create weet with content longer than 140 characters should be trimmed to 140 characters', async () => {
     const user = await factory.create('UserWithHash');
+    const { id: userId } = user;
     const loginBody = {
       email: user.email,
       password: defaultPassword
     };
-    getSentence.mockReturnValueOnce(Promise.resolve(weetData.weetContentError));
+    getSentence.mockReturnValueOnce(Promise.resolve(weetData.weetContentError.content));
     const responseLogin = await request.post('/users/sessions').send(loginBody);
     const { token } = responseLogin.body;
     const response = await request.post('/weets').set('Authorization', `Bearer ${token}`);
-    expect(response.statusCode).toBe(500);
-    expect(response.body).toMatchObject(defaultErrorResponse());
+    expect(response.statusCode).toBe(201);
+    expect(response.body.content.length).toBe(weetsConfig.contentMaxLength);
+    expect(response.body.user_id).toBe(userId);
   });
 
   test('Create weet when sevice does not work must fail', async () => {
