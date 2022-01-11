@@ -14,5 +14,6 @@ module.exports = {
   PER_PAGE_REQUIRED: 'per_page_required',
   PAGE_NUMERIC: 'page_must_be_int',
   PER_PAGE_NUMERIC: 'per_page_must_be_int',
-  DEFAULT_ERROR: 'default_error'
+  DEFAULT_ERROR: 'default_error',
+  WEET_CONTENT_MAX_LENGTH: 'weet_content_max_length'
 };

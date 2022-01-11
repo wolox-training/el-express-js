@@ -57,6 +57,9 @@ const config = {
     pagination: {
       pageDefault: process.env.PAGE_DEFAULT || 1,
       perPageDefault: process.env.PER_PAGE_DEFAULT || 10
+    },
+    weets: {
+      contentMaxLength: process.env.WEET_CONTENT_MAX_LENGTH || 140
     }
   }
 };
