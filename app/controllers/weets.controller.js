@@ -26,8 +26,8 @@ exports.getWeets = async (req, res, next) => {
     const pagination = paginationMapper(query);
     const weets = await weetFindAll(pagination);
     return res.status(200).send({
-      ...paginationSerializer({ count: weets.count, ...query }),
-      weets: weetsSerializer(weets.rows)
+      page: weetsSerializer(weets.rows),
+      ...paginationSerializer({ count: weets.count, ...query })
     });
   } catch (err) {
     logger.error(err);

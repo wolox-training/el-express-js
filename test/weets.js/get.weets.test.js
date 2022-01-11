@@ -29,11 +29,14 @@ describe('/weets GET', () => {
       .set('Authorization', `Bearer ${token}`)
       .query({ page, per_page });
     expect(response.statusCode).toBe(200);
-    expect(response.body.total).toBe(totalWeets);
-    expect(response.body.page).toBe(page);
+    expect(response.body.count).toBe(totalWeets);
+    expect(response.body.current_page).toBe(page);
     expect(response.body.per_page).toBe(per_page);
-    expect(response.body.weets).toBeArrayOfSize(totalWeets);
-    expect(JSON.parse(JSON.stringify(weets))).toIncludeAllPartialMembers(response.body.weets);
+    expect(response.body.previous_page).toBeNull();
+    expect(response.body.next_page).toBe(page + 1);
+    expect(response.body.total_pages).toBe(1);
+    expect(response.body.page).toBeArrayOfSize(totalWeets);
+    expect(JSON.parse(JSON.stringify(weets))).toIncludeAllPartialMembers(response.body.page);
   });
   test('Get weets must succesful when per_page is greather than totalWeets', async () => {
     const page = 1;
@@ -54,11 +57,14 @@ describe('/weets GET', () => {
       .set('Authorization', `Bearer ${token}`)
       .query({ page, per_page });
     expect(response.statusCode).toBe(200);
-    expect(response.body.total).toBe(totalWeets);
-    expect(response.body.page).toBe(page);
+    expect(response.body.count).toBe(totalWeets);
+    expect(response.body.current_page).toBe(page);
     expect(response.body.per_page).toBe(per_page);
-    expect(response.body.weets).toBeArrayOfSize(totalWeets);
-    expect(JSON.parse(JSON.stringify(weets))).toIncludeAllPartialMembers(response.body.weets);
+    expect(response.body.previous_page).toBeNull();
+    expect(response.body.next_page).toBe(page + 1);
+    expect(response.body.total_pages).toBe(1);
+    expect(response.body.page).toBeArrayOfSize(totalWeets);
+    expect(JSON.parse(JSON.stringify(weets))).toIncludeAllPartialMembers(response.body.page);
   });
   test('Get weets must successful when per_page is less than totalWeets', async () => {
     const page = 1;
@@ -79,11 +85,14 @@ describe('/weets GET', () => {
       .set('Authorization', `Bearer ${token}`)
       .query({ page, per_page });
     expect(response.statusCode).toBe(200);
-    expect(response.body.total).toBe(totalWeets);
-    expect(response.body.page).toBe(page);
+    expect(response.body.count).toBe(totalWeets);
+    expect(response.body.current_page).toBe(page);
     expect(response.body.per_page).toBe(per_page);
-    expect(response.body.weets).toBeArrayOfSize(per_page);
-    expect(JSON.parse(JSON.stringify(weets))).toIncludeAllPartialMembers(response.body.weets);
+    expect(response.body.previous_page).toBeNull();
+    expect(response.body.next_page).toBe(page + 1);
+    expect(response.body.total_pages).toBe(3);
+    expect(response.body.page).toBeArrayOfSize(per_page);
+    expect(JSON.parse(JSON.stringify(weets))).toIncludeAllPartialMembers(response.body.page);
   });
   test('GET weets when token is invalid must fail', async () => {
     const response = await request.get('/weets').set('Authorization', 'Bearer invalid:token');

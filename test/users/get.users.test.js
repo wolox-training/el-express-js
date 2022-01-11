@@ -26,11 +26,14 @@ describe('/users GET', () => {
       .set('Authorization', `Bearer ${token}`)
       .query({ page, per_page });
     expect(response.statusCode).toBe(200);
-    expect(response.body.total).toBe(totalUsers);
-    expect(response.body.page).toBe(page);
+    expect(response.body.count).toBe(totalUsers);
+    expect(response.body.current_page).toBe(page);
     expect(response.body.per_page).toBe(per_page);
-    expect(response.body.users).toBeArrayOfSize(totalUsers);
-    expect(JSON.parse(JSON.stringify(users))).toIncludeAllPartialMembers(response.body.users);
+    expect(response.body.page).toBeArrayOfSize(totalUsers);
+    expect(response.body.previous_page).toBeNull();
+    expect(response.body.next_page).toBe(page + 1);
+    expect(response.body.total_pages).toBe(1);
+    expect(JSON.parse(JSON.stringify(users))).toIncludeAllPartialMembers(response.body.page);
   });
   test('Get users must be successful when per_page is greather than totalUsers', async () => {
     const page = 1;
@@ -50,11 +53,14 @@ describe('/users GET', () => {
       .set('Authorization', `Bearer ${token}`)
       .query({ page, per_page });
     expect(response.statusCode).toBe(200);
-    expect(response.body.total).toBe(totalUsers);
-    expect(response.body.page).toBe(page);
+    expect(response.body.count).toBe(totalUsers);
+    expect(response.body.current_page).toBe(page);
     expect(response.body.per_page).toBe(per_page);
-    expect(response.body.users).toBeArrayOfSize(totalUsers);
-    expect(JSON.parse(JSON.stringify(users))).toIncludeAllPartialMembers(response.body.users);
+    expect(response.body.page).toBeArrayOfSize(totalUsers);
+    expect(response.body.previous_page).toBeNull();
+    expect(response.body.next_page).toBe(page + 1);
+    expect(response.body.total_pages).toBe(1);
+    expect(JSON.parse(JSON.stringify(users))).toIncludeAllPartialMembers(response.body.page);
   });
   test('Get users must be successful when per_page is less than totalUsers', async () => {
     const page = 1;
@@ -74,11 +80,14 @@ describe('/users GET', () => {
       .set('Authorization', `Bearer ${token}`)
       .query({ page, per_page });
     expect(response.statusCode).toBe(200);
-    expect(response.body.total).toBe(totalUsers);
-    expect(response.body.page).toBe(page);
+    expect(response.body.count).toBe(totalUsers);
+    expect(response.body.current_page).toBe(page);
     expect(response.body.per_page).toBe(per_page);
-    expect(response.body.users).toBeArrayOfSize(per_page);
-    expect(JSON.parse(JSON.stringify(users))).toIncludeAllPartialMembers(response.body.users);
+    expect(response.body.previous_page).toBeNull();
+    expect(response.body.next_page).toBe(page + 1);
+    expect(response.body.total_pages).toBe(3);
+    expect(response.body.page).toBeArrayOfSize(per_page);
+    expect(JSON.parse(JSON.stringify(users))).toIncludeAllPartialMembers(response.body.page);
   });
 
   test('Get users when token is missing must fail', async () => {
@@ -109,7 +118,7 @@ describe('/users GET', () => {
       .query({ per_page });
     expect(response.statusCode).toBe(200);
     expect(response.body.per_page).toBe(per_page);
-    expect(response.body.page).toBe(1);
+    expect(response.body.current_page).toBe(1);
   });
   test('Get users without per_page in query must use 10 by default', async () => {
     const page = 10;
@@ -127,7 +136,7 @@ describe('/users GET', () => {
       .set('Authorization', `Bearer ${token}`)
       .query({ page });
     expect(response.statusCode).toBe(200);
-    expect(response.body.page).toBe(page);
+    expect(response.body.current_page).toBe(page);
     expect(response.body.per_page).toBe(10);
   });
 
