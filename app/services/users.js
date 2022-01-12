@@ -28,3 +28,18 @@ exports.userFindAll = async ({ limit, offset }) => {
     throw databaseError(DATABASE_ERROR);
   }
 };
+
+exports.userUpdate = async (id, userData) => {
+  const queryBuilder = {
+    where: { id },
+    returning: true,
+    plain: true
+  };
+  try {
+    const [, user] = await User.update(userData, queryBuilder);
+    return user;
+  } catch (err) {
+    logger.error(err);
+    throw databaseError(DATABASE_ERROR);
+  }
+};

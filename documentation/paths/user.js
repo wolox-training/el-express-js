@@ -73,6 +73,43 @@ module.exports = {
       }
     }
   },
+  '/admin/users': {
+    post: {
+      tags: ['CRUD operations'],
+      description: 'Create admin',
+      operationId: 'createAdmin',
+      parameter: [],
+      requestBody: {
+        content: {
+          'application/json': {
+            schema: {
+              $ref: '#/components/schemas/User'
+            }
+          }
+        },
+        required: true
+      },
+      responses: {
+        200: {
+          description: 'Admin was created'
+        },
+        400: {
+          description: 'Invalid parameters',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/Error'
+              },
+              example: {
+                message: 'Email is required',
+                internal_code: 'invalid_parameters'
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   '/users/sessions': {
     post: {
       tags: ['AUTH operations'],
