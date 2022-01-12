@@ -44,6 +44,42 @@ module.exports = {
           }
         }
       }
+    },
+    get: {
+      tags: ['CRUD operations'],
+      description: 'Get weets',
+      operationId: 'getWeets',
+      parameters: [
+        {
+          name: 'page',
+          in: 'query',
+          schema: {
+            type: 'integer',
+            default: 1
+          }
+        },
+        {
+          name: 'per_page',
+          in: 'query',
+          schema: {
+            type: 'integer',
+            default: 10
+          },
+          required: false
+        }
+      ],
+      responses: {
+        200: {
+          description: 'Weets were obtained',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/Weets'
+              }
+            }
+          }
+        }
+      }
     }
   }
 };

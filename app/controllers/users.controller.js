@@ -31,8 +31,8 @@ exports.getUsers = async (req, res, next) => {
     const pagination = paginationMapper(query);
     const users = await userFindAll(pagination);
     return res.status(200).send({
-      ...paginationSerializer({ count: users.count, ...query }),
-      users: usersSerializer(users.rows)
+      page: usersSerializer(users.rows),
+      ...paginationSerializer({ count: users.count, ...query })
     });
   } catch (err) {
     logger.error(err.message);

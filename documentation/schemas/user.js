@@ -56,7 +56,7 @@ module.exports = {
   Users: {
     type: 'object',
     properties: {
-      users: {
+      page: {
         type: 'array',
         items: {
           $ref: '#/components/schemas/UserList'
