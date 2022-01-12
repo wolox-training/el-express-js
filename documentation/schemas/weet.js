@@ -24,5 +24,16 @@ module.exports = {
         $ref: '#/components/schemas/user_id'
       }
     }
+  },
+  Weets: {
+    type: 'object',
+    properties: {
+      page: {
+        type: 'array',
+        items: {
+          $ref: '#/components/schemas/Weet'
+        }
+      }
+    }
   }
 };
