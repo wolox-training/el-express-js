@@ -28,7 +28,8 @@ exports.defaultPassword = 'XYZ1234567789';
 
 factory.extend('User', 'UserWithHash', {
   password: hash(exports.defaultPassword),
-  email: factory.sequence('User.email', n => `user.test${n}@wolox.com.co`)
+  email: factory.sequence('User.email', n => `user.test${n}@wolox.com.co`),
+  score: chance.integer({ min: 0, max: 100 })
 });
 
 const userFake = () => ({
