@@ -2,7 +2,7 @@ const { factory } = require('factory-girl');
 const Chance = require('chance');
 const { factoryByModel } = require('./factory_by_models');
 const { hash } = require('.././../app/helpers/auth');
-const { badRequest, authenticationError } = require('../../app/errors');
+const { badRequest, authenticationError, forbidden } = require('../../app/errors');
 const { responseError } = require('../helpers/errors');
 const { removeProperty } = require('../helpers/body');
 const {
@@ -19,8 +19,10 @@ const {
   PAGE_REQUIRED,
   PAGE_NUMERIC,
   PER_PAGE_REQUIRED,
-  PER_PAGE_NUMERIC
+  PER_PAGE_NUMERIC,
+  UNAUTHORIZED_ROLE
 } = require('../../app/constants/errors');
+const { ADMIN_ROLE, REGULAR_ROLE } = require('../../app/constants/users');
 
 const chance = new Chance();
 factoryByModel('User');
@@ -30,6 +32,9 @@ factory.extend('User', 'UserWithHash', {
   password: hash(exports.defaultPassword),
   email: factory.sequence('User.email', n => `user.test${n}@wolox.com.co`),
   score: chance.integer({ min: 0, max: 100 })
+});
+factory.extend('UserWithHash', 'Admin', {
+  role: ADMIN_ROLE
 });
 
 const userFake = () => ({
@@ -45,7 +50,14 @@ exports.userData = {
   responseWhenUserIsCreated: {
     surname: newUser.surname,
     name: newUser.name,
-    email: newUser.email
+    email: newUser.email,
+    role: REGULAR_ROLE
+  },
+  responseWhenAdminIsCreated: {
+    surname: newUser.surname,
+    name: newUser.name,
+    email: newUser.email,
+    role: ADMIN_ROLE
   },
   userPasswordNumeric: {
     ...userFake(),
@@ -80,5 +92,6 @@ exports.userErrors = {
   pageRequired: responseError(badRequest(PAGE_REQUIRED)),
   pageNumeric: responseError(badRequest(PAGE_NUMERIC)),
   perPageRequired: responseError(badRequest(PER_PAGE_REQUIRED)),
-  perPageNumeric: responseError(badRequest(PER_PAGE_NUMERIC))
+  perPageNumeric: responseError(badRequest(PER_PAGE_NUMERIC)),
+  forbidden: responseError(forbidden(UNAUTHORIZED_ROLE))
 };

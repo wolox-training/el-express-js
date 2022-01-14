@@ -1,5 +1,5 @@
 const logger = require('../logger');
-const { userCreate, userFindByEmail, userFindAll } = require('../services/users');
+const { userCreate, userFindByEmail, userFindAll, userUpdate } = require('../services/users');
 const { userSerializer, usersSerializer } = require('../serializer/users');
 const { paginationSerializer } = require('../serializer/pagination');
 const { userSignUpMapper, userSignInMapper } = require('../mappers/user');
@@ -7,6 +7,7 @@ const { paginationMapper } = require('../mappers/pagination');
 const { hash, compareHash, jwtEncode } = require('../helpers/auth');
 const errors = require('../errors');
 const { EMAIL_EXISTS, DATABASE_ERROR, EMAIL_OR_PASSWORD_DO_NOT_MATCH } = require('../constants/errors');
+const { ADMIN_ROLE } = require('../constants/users');
 
 exports.signUp = async (req, res, next) => {
   const { body } = req;
@@ -48,6 +49,21 @@ exports.signIn = async (req, res, next) => {
     if (!comparePassword) throw errors.authenticationError(EMAIL_OR_PASSWORD_DO_NOT_MATCH);
     const token = jwtEncode(userSerializer(user));
     return res.status(200).send({ token });
+  } catch (err) {
+    return next(err);
+  }
+};
+exports.createAdmin = async (req, res, next) => {
+  const { body } = req;
+  const userData = userSignUpMapper(body);
+  try {
+    const userExists = await userFindByEmail(userData.email);
+    const passwordHash = hash(userData.password);
+    const userAdmin = userExists
+      ? await userUpdate(userExists.id, { role: ADMIN_ROLE })
+      : await userCreate({ ...userData, password: passwordHash, role: ADMIN_ROLE });
+    const statusCode = userExists ? 200 : 201;
+    return res.status(statusCode).send(userSerializer(userAdmin));
   } catch (err) {
     return next(err);
   }

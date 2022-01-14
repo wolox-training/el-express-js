@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
           const score = this.getDataValue('score');
           return getPosition(score);
         }
+      },
+      role: {
+        type: DataTypes.ENUM,
+        values: ['ADMIN', 'REGULAR'],
+        defaultValue: 'REGULAR'
       }
     },
     {

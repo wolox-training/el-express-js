@@ -15,6 +15,10 @@ module.exports = {
     type: 'string',
     example: 'abCdE1234556'
   },
+  userRole: {
+    type: 'string',
+    example: 'REGULAR'
+  },
   User: {
     type: 'object',
     properties: {
@@ -32,13 +36,30 @@ module.exports = {
       }
     }
   },
+  UserList: {
+    type: 'object',
+    properties: {
+      name: {
+        $ref: '#/components/schemas/username'
+      },
+      surname: {
+        $ref: '#/components/schemas/userSurname'
+      },
+      email: {
+        $ref: '#/components/schemas/userEmail'
+      },
+      role: {
+        $ref: '#/components/schemas/userRole'
+      }
+    }
+  },
   Users: {
     type: 'object',
     properties: {
       page: {
         type: 'array',
         items: {
-          $ref: '#/components/schemas/User'
+          $ref: '#/components/schemas/UserList'
         }
       }
     }

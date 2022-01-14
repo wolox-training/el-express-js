@@ -4,7 +4,8 @@ exports.userSerializer = user => ({
   surname: user.surname,
   email: user.email,
   score: user.score,
-  position: user.position
+  position: user.position,
+  role: user.role
 });
 
 exports.usersSerializer = users => users.map(user => this.userSerializer(user));
