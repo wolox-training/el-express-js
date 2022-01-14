@@ -62,7 +62,8 @@ exports.createAdmin = async (req, res, next) => {
     const userAdmin = userExists
       ? await userUpdate(userExists.id, { role: ADMIN_ROLE })
       : await userCreate({ ...userData, password: passwordHash, role: ADMIN_ROLE });
-    return res.status(201).send(userSerializer(userAdmin));
+    const statusCode = userExists ? 200 : 201;
+    return res.status(statusCode).send(userSerializer(userAdmin));
   } catch (err) {
     return next(err);
   }
