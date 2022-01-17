@@ -1,6 +1,9 @@
 const Chance = require('chance');
 const { factory } = require('factory-girl');
 const { factoryByModel } = require('./factory_by_models');
+const { badRequest } = require('../../app/errors');
+const { SCORE_RANGE_INVALID } = require('../../app/constants/errors');
+const { responseError } = require('../helpers/errors');
 
 const chance = new Chance();
 require('./user_factory');
@@ -27,4 +30,8 @@ factory.extend('Weet', 'WeetNew', {
 exports.weetData = {
   newWeet: weetFake(),
   weetContentError: weetFakeContentError()
+};
+
+exports.weetErrors = {
+  scoreInvalidRange: responseError(badRequest(SCORE_RANGE_INVALID))
 };
