@@ -7,7 +7,7 @@ const { defaultPassword, userErrors } = require('../factory/user_factory');
 
 const request = supertest(app);
 describe('/weets/:id/rating POST', () => {
-  test('Create rating should be success and must increment user score by 1', async () => {
+  test('Create rating should be success and must increase the user score by 1', async () => {
     const weet = await factory.create('WeetNew');
     const user = await factory.create('UserWithHash');
     const score = 1;
@@ -33,7 +33,7 @@ describe('/weets/:id/rating POST', () => {
     const userAfterRating = find('id', weet.user_id)(responseUserAfterRating.body.page);
     expect(userAfterRating.score).toBe(userBeforeRating.score + 1);
   });
-  test('Create rating should be success and must decrement user score by 1', async () => {
+  test('Create rating should be success and must decrease user score by 1', async () => {
     const weet = await factory.create('WeetNew');
     const user = await factory.create('UserWithHash');
     const score = -1;
@@ -59,7 +59,7 @@ describe('/weets/:id/rating POST', () => {
     expect(response.statusCode).toBe(201);
     expect(userAfterRating.score).toBe(userBeforeRating.score - 1);
   });
-  test('Create rating when rating exist with same score dont add any value to user', async () => {
+  test('Create rating when rating exist with same score does not add any value to the user', async () => {
     const weet = await factory.create('WeetNew');
     const user = await factory.create('UserWithHash');
     const score = 1;
@@ -121,7 +121,7 @@ describe('/weets/:id/rating POST', () => {
     expect(response.statusCode).toBe(400);
     expect(response.body).toMatchObject(weetErrors.scoreInvalidRange);
   });
-  test('Create rating when score is less greather than 1', async () => {
+  test('Create rating when score is greater than 1', async () => {
     const weet = await factory.create('WeetNew');
     const user = await factory.create('UserWithHash');
     const loginRequest = {
@@ -142,7 +142,7 @@ describe('/weets/:id/rating POST', () => {
     expect(response.statusCode).toBe(400);
     expect(response.body).toMatchObject(weetErrors.scoreInvalidRange);
   });
-  test('Create rating with different user must increment score', async () => {
+  test('Create rating with different user should increase the score', async () => {
     const weet = await factory.create('WeetNew');
     const users = await factory.createMany('UserWithHash', 2);
     const firstUser = users.pop();
@@ -182,7 +182,7 @@ describe('/weets/:id/rating POST', () => {
     expect(secondRatingResponse.statusCode).toBe(201);
     expect(userAfterRating.score).toBe(userBeforeRating.score + 2);
   });
-  test('Create rating with different user must decrement score', async () => {
+  test('Create rating with different user should decrease score', async () => {
     const weet = await factory.create('WeetNew');
     const users = await factory.createMany('UserWithHash', 2);
     const firstUser = users.pop();
