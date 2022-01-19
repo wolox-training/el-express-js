@@ -24,10 +24,9 @@ exports.weetFindAll = async ({ limit, offset }) => {
   }
 };
 
-exports.weetFindByPk = async id => {
+exports.weetFindByPk = id => {
   try {
-    const weet = await Weet.findByPk(id);
-    return weet;
+    return Weet.findByPk(id);
   } catch (err) {
     logger.error(err);
     throw databaseError(DATABASE_ERROR);
