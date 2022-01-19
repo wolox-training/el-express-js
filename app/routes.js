@@ -8,6 +8,8 @@ const { checkAuth } = require('./middlewares/auth');
 const { hasRole } = require('./middlewares/roles');
 const { ADMIN_ROLE } = require('./constants/users');
 const { weetCreate, getWeets } = require('./controllers/weets.controller');
+const { ratingWeet } = require('./controllers/ratings.controller');
+const { ratingSchema } = require('./schemas/rating_schema');
 
 exports.init = app => {
   app.get('/health', healthCheck);
@@ -17,6 +19,7 @@ exports.init = app => {
   app.post('/weets', [checkAuth], weetCreate);
   app.post('/admin/users', [checkAuth, hasRole(ADMIN_ROLE), validOrAbort(userSchema)], createAdmin);
   app.get('/weets', [checkAuth, validOrAbort(paginationSchema)], getWeets);
+  app.post('/weets/:id/ratings', [checkAuth, validOrAbort(ratingSchema)], ratingWeet);
   // app.get('/endpoint/get/path', [], controller.methodGET);
   // app.put('/endpoint/put/path', [], controller.methodPUT);
   // app.post('/endpoint/post/path', [], controller.methodPOST);

@@ -23,3 +23,12 @@ exports.weetFindAll = async ({ limit, offset }) => {
     throw databaseError(DATABASE_ERROR);
   }
 };
+
+exports.weetFindByPk = id => {
+  try {
+    return Weet.findByPk(id);
+  } catch (err) {
+    logger.error(err);
+    throw databaseError(DATABASE_ERROR);
+  }
+};
