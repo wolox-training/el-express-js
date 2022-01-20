@@ -1,0 +1,43 @@
+name: CI training
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DB_PASSWORD: "postgres"
+      DB_NAME: "w_training_test"
+      DB_USER: "postgres"
+      ROUNDS: 10
+      SECRET_KEY: "superSecretKey"
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
+          POSTGRES_DB: ${{ env.DB_NAME }}
+          POSTGRES_USER: ${{ env.DB_USER }} 
+        ports:
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v2
+      - name: Node version
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14.x"
+          registry-url: https://registry.npmjs.org
+      - name: Installing dependencies
+        run: npm install
+      - name: .env file and credentials
+        run: |
+          touch .env
+          echo "DB_USERNAME=$DB_USER" >> .env
+          echo "DB_PASSWORD=$DB_PASSWORD" >> .env
+          echo "DB_NAME_TEST=$DB_NAME" >> .env
+          echo "ROUNDS=$ROUNDS" >> .env
+          echo "SECRET_KEY=$SECRET_KEY" >> .env
+      - name: Linter
+        run: npm run lint
+      - name: Migrations
+        run: npm run migrations-test
+      - name: Tests
+        run: npm run test

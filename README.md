@@ -1,3 +1,5 @@
+![CI](https://github.com/wolox-training/el-express-js/actions/workflows/main.yml/badge.svg)
+
 # w-training
 
 w-training
