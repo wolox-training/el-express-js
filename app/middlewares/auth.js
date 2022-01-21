@@ -12,6 +12,7 @@ exports.checkAuth = (req, _, next) => {
     const verify = validateJwt(token);
     if (!verify.isValid) throw errors.authenticationError(TOKEN_INVALID);
     req.payload = verify.payload;
+    console.log(verify.payload.iat, 'iat');
     return next();
   } catch (err) {
     logger.error(err);
