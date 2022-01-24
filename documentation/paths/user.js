@@ -160,5 +160,17 @@ module.exports = {
         }
       }
     }
+  },
+  '/users/sessions/invalidate_all': {
+    post: {
+      tags: ['CRUD operations'],
+      description: 'Disable sessions',
+      operationId: 'disableSessions',
+      responses: {
+        200: {
+          description: 'Disabled tokens'
+        }
+      }
+    }
   }
 };

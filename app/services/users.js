@@ -43,3 +43,12 @@ exports.userUpdate = async (id, userData) => {
     throw databaseError(DATABASE_ERROR);
   }
 };
+
+exports.userFindByPk = id => {
+  try {
+    return User.findByPk(id);
+  } catch (err) {
+    logger.error(err);
+    throw databaseError(DATABASE_ERROR);
+  }
+};

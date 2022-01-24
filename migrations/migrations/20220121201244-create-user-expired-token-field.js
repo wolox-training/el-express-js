@@ -9,7 +9,8 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
     await queryInterface.addColumn('users', 'tokens_expired', {
-      type: Sequelize.DATE
+      type: Sequelize.DATE,
+      defaultValue: null
     });
   },
 

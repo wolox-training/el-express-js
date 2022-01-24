@@ -23,6 +23,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM,
         values: ['ADMIN', 'REGULAR'],
         defaultValue: 'REGULAR'
+      },
+      tokens_expired: {
+        type: DataTypes.DATE
       }
     },
     {

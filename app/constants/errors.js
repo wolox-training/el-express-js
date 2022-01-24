@@ -18,5 +18,6 @@ module.exports = {
   WEET_CONTENT_MAX_LENGTH: 'weet_content_max_length',
   UNAUTHORIZED_ROLE: 'unauthorized_role',
   WEET_DOES_NOT_EXIST: 'weet_does_not_exist',
-  SCORE_RANGE_INVALID: 'score_range_invalid'
+  SCORE_RANGE_INVALID: 'score_range_invalid',
+  TOKEN_EXPIRED: 'token_expired'
 };

@@ -49,7 +49,8 @@ const config = {
       rounds: process.env.ROUNDS
     },
     jwt: {
-      secretKey: process.env.SECRET_KEY
+      secretKey: process.env.SECRET_KEY,
+      expiresIn: process.env.EXPIRES_I || '1h'
     },
     numbersApi: {
       url: process.env.URL_NUMBER_SENTECE
