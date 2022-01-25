@@ -50,7 +50,7 @@ const config = {
     },
     jwt: {
       secretKey: process.env.SECRET_KEY,
-      expiresIn: process.env.EXPIRES_I || '1h'
+      expiresIn: process.env.EXPIRES_IN || '1h'
     },
     numbersApi: {
       url: process.env.URL_NUMBER_SENTECE
