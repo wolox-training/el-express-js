@@ -6,5 +6,6 @@ module.exports = {
   TL_POSITION: 'TL',
   EM_POSITION: 'EM',
   HEAD_POSITION: 'HEAD',
-  CEO_POSITION: 'CEO'
+  CEO_POSITION: 'CEO',
+  DISABLED_TOKENS: 'Disabled_Tokens'
 };

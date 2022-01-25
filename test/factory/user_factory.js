@@ -20,7 +20,8 @@ const {
   PAGE_NUMERIC,
   PER_PAGE_REQUIRED,
   PER_PAGE_NUMERIC,
-  UNAUTHORIZED_ROLE
+  UNAUTHORIZED_ROLE,
+  TOKEN_EXPIRED
 } = require('../../app/constants/errors');
 const { ADMIN_ROLE, REGULAR_ROLE } = require('../../app/constants/users');
 
@@ -31,7 +32,8 @@ exports.defaultPassword = 'XYZ1234567789';
 factory.extend('User', 'UserWithHash', {
   password: hash(exports.defaultPassword),
   email: factory.sequence('User.email', n => `user.test${n}@wolox.com.co`),
-  score: chance.integer({ min: 0, max: 100 })
+  score: chance.integer({ min: 0, max: 100 }),
+  tokens_expired: null
 });
 factory.extend('UserWithHash', 'Admin', {
   role: ADMIN_ROLE
@@ -90,6 +92,7 @@ exports.userErrors = {
   tokenInvalid: responseError(authenticationError(TOKEN_INVALID)),
   tokenRequired: responseError(authenticationError(TOKEN_REQUIRED)),
   pageRequired: responseError(badRequest(PAGE_REQUIRED)),
+  tokenExpired: responseError(authenticationError(TOKEN_EXPIRED)),
   pageNumeric: responseError(badRequest(PAGE_NUMERIC)),
   perPageRequired: responseError(badRequest(PER_PAGE_REQUIRED)),
   perPageNumeric: responseError(badRequest(PER_PAGE_NUMERIC)),

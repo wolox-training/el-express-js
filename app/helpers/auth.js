@@ -29,7 +29,8 @@ exports.compareHash = (hash, textPlain) => bcryptJs.compareSync(textPlain, hash)
  */
 exports.jwtEncode = payload => {
   const { secretKey } = jwtConfig;
-  return jwt.encode(payload, secretKey);
+  const iat = Date.now();
+  return jwt.encode({ ...payload, iat }, secretKey);
 };
 /**
  *

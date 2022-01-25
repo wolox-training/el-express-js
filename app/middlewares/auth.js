@@ -1,9 +1,10 @@
 const logger = require('../logger');
 const errors = require('../errors');
-const { TOKEN_INVALID, TOKEN_REQUIRED } = require('../constants/errors');
+const { TOKEN_INVALID, TOKEN_REQUIRED, TOKEN_EXPIRED } = require('../constants/errors');
 const { validateJwt } = require('../helpers/auth');
+const { userFindByPk } = require('../services/users');
 
-exports.checkAuth = (req, _, next) => {
+exports.checkAuth = async (req, _, next) => {
   const { authorization } = req.headers;
   try {
     if (!authorization) throw errors.authenticationError(TOKEN_REQUIRED);
@@ -12,6 +13,12 @@ exports.checkAuth = (req, _, next) => {
     const verify = validateJwt(token);
     if (!verify.isValid) throw errors.authenticationError(TOKEN_INVALID);
     req.payload = verify.payload;
+    const { id: userId, iat } = verify.payload;
+    const user = await userFindByPk(userId);
+    if (!user) throw errors.authenticationError(TOKEN_INVALID);
+    const { tokens_expired: tokensExpired } = user;
+    const timeExpired = new Date(tokensExpired).getTime();
+    if (iat < timeExpired) throw errors.authenticationError(TOKEN_EXPIRED);
     return next();
   } catch (err) {
     logger.error(err);

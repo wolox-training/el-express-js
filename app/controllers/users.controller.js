@@ -7,7 +7,7 @@ const { paginationMapper } = require('../mappers/pagination');
 const { hash, compareHash, jwtEncode } = require('../helpers/auth');
 const errors = require('../errors');
 const { EMAIL_EXISTS, DATABASE_ERROR, EMAIL_OR_PASSWORD_DO_NOT_MATCH } = require('../constants/errors');
-const { ADMIN_ROLE } = require('../constants/users');
+const { ADMIN_ROLE, DISABLED_TOKENS } = require('../constants/users');
 
 exports.signUp = async (req, res, next) => {
   const { body } = req;
@@ -64,6 +64,19 @@ exports.createAdmin = async (req, res, next) => {
       : await userCreate({ ...userData, password: passwordHash, role: ADMIN_ROLE });
     const statusCode = userExists ? 200 : 201;
     return res.status(statusCode).send(userSerializer(userAdmin));
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.invalidateSessions = async (req, res, next) => {
+  const {
+    payload: { id: userId }
+  } = req;
+  try {
+    const now = Date.now();
+    await userUpdate(userId, { tokens_expired: now });
+    return res.status(200).send({ message: DISABLED_TOKENS });
   } catch (err) {
     return next(err);
   }

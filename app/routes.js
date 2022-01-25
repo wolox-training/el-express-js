@@ -1,6 +1,12 @@
 // const controller = require('./controllers/controller');
 const { healthCheck } = require('./controllers/healthCheck');
-const { signUp, signIn, getUsers, createAdmin } = require('./controllers/users.controller');
+const {
+  signUp,
+  signIn,
+  getUsers,
+  createAdmin,
+  invalidateSessions
+} = require('./controllers/users.controller');
 const { userSchema, signInSchema } = require('./schemas/user_schema');
 const { paginationSchema } = require('./schemas/pagination_schema');
 const { validOrAbort } = require('./middlewares/validate_request');
@@ -20,6 +26,7 @@ exports.init = app => {
   app.post('/admin/users', [checkAuth, hasRole(ADMIN_ROLE), validOrAbort(userSchema)], createAdmin);
   app.get('/weets', [checkAuth, validOrAbort(paginationSchema)], getWeets);
   app.post('/weets/:id/ratings', [checkAuth, validOrAbort(ratingSchema)], ratingWeet);
+  app.post('/users/sessions/invalidate_all', [checkAuth], invalidateSessions);
   // app.get('/endpoint/get/path', [], controller.methodGET);
   // app.put('/endpoint/put/path', [], controller.methodPUT);
   // app.post('/endpoint/post/path', [], controller.methodPOST);
